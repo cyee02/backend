@@ -80,8 +80,11 @@ app.post('/api/notes', (request, response) => {
 app.put('/api/notes/:id', (request, response) => {
   const id = Number(request.params.id)
   const note = notes.find(note => note.id === id)
+  const body = request.body
   if (note) {
-    response.json(note)
+    const newNotes = notes.map(note => note.id !== id ? note : body)
+    notes = newNotes
+    response.json(body)
   } else {
     response.status(404).end()
   }
